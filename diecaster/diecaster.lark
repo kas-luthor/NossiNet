@@ -1,0 +1,33 @@
+?expr: (pexpr | dice)
+?pexpr: "(" expr ")"
+?arg: NUM | pexpr
+
+?arith: plus | minus
+plus: "+" aarg
+minus: "-" aarg
+?aarg: DIGITS | pexpr | dice_expl
+
+?dice_mod: (reroll_low | reroll_high)? sort? (e | f | sum | max | min)? EXPLOSION?
+dice: selector? dienum? die? dice_mod arith*
+dice_expl: selector? dienum? die dice_mod
+dienum: arg
+die: "d" arg
+
+selector: arg ("," arg)* "@"
+
+reroll_low: "r" arg
+reroll_high: "R" arg
+
+e: "e" arg
+f: "f" arg
+
+sort: "s"
+sum: "g"
+max: "h"
+min: "l"
+
+NUM: /-?[1-9][0-9]*/
+DIGITS: /[1-9][0-9]*/
+EXPLOSION: /!+/
+
+%ignore /\s/
